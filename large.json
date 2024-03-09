@@ -1,0 +1,17 @@
+{
+  "earth": {
+    "lll": {
+      "kd": "l"
+    },
+    "europe": [
+      {"name": "Paris", "type": "city", "info": "{ ... }"},
+      {"name": "Thames", "type": "river", "info": "{ ... }"}
+    ]
+  },
+  "earth2": {
+
+    "america": [
+      {"name": "Texas", "type": "state", "info": ""}
+    ]
+  }
+}
