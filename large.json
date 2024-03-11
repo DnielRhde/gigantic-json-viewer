@@ -1,17 +1,12 @@
 {
-  "earth": {
-    "lll": {
-      "kd": "l"
-    },
-    "europe": [
-      {"name": "Paris", "type": "city", "info": "{ ... }"},
-      {"name": "Thames", "type": "river", "info": "{ ... }"}
-    ]
-  },
-  "earth2": {
+  "earth": [
 
-    "america": [
-      {"name": "Texas", "type": "state", "info": ""}
-    ]
-  }
+      {"name": "Paris", "type": "city"},
+      {"name": "Thames", "type": "river"}
+  ],
+  "earth2": [
+
+      {"name": "Pards", "type": "ciddty"},
+      {"name": "222", "type": "ri2ver"}
+  ]
 }

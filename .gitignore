@@ -1,3 +1,6 @@
 .idea
 venv
 data
+readfile2.py
+large.json
+exporteddata
