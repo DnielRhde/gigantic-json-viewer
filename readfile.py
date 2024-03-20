@@ -1,13 +1,23 @@
 import ijson
 from pprint import pprint
-import ujson
 from zipfile import ZipFile
 import time
+import exporter
 
 tree = {}
 
 path = ""
 command = ""
+
+def getPathEvents(file,parentpath):
+    foundbool = 0
+    for x in ijson.parse(file):
+        if parentpath in x[0]:
+            foundbool = True
+            yield x
+        else:
+            if foundbool == True:
+                break
 
 def formatAndPrint(x):
     if(x[2] != None):
@@ -18,9 +28,9 @@ def formatAndPrint(x):
 
 #data/DAR_Totaludtraek_HF_20240306110705/DAR_Totaludtraek_HF_20240306110705.json
 while(True):
-    with ZipFile("data/DAR_Totaludtraek_HF_20240306110705.zip", 'r') as zipfile:
-        zipfile.printdir()
-        with zipfile.open('DAR_Totaludtraek_HF_20240306110705.json', 'r') as file:
+    with ZipFile("data/Ejendomsbeliggenhed_Simpel_HF_20240318162534.zip", 'r') as zipfile:
+        #zipfile.printdir()
+        with zipfile.open('Ejendomsbeliggenhed_Simpel_HF_20240318162534.json', 'r') as file:
             print("")
             print("(!) Use 'go <distination>' to view structure. Write '' in <distination> to get top-level")
             print("(!) Use 'export <distination>.item' to export the list with all its objects to ndjson")
@@ -35,29 +45,18 @@ while(True):
                 print("")
                 path = command[7:len(command)]
                 command = "export"
-
+                print(path.split(" "))
+                exporter.export(file,path.split(" "))
+                break
             else:
                 print("Please enter valid command")
                 continue
             if(path[len(path)-4:] == "item"):
-                parser = ijson.items(file,path)
-                if(command == "export"):
-                    with open('exporteddata/'+path.split(".")[-2]+'.csv','a') as exportfile:
-                        exportfile.truncate(0)
-                        tempcount = 0
-                        objcount = 0
-                        for item in parser:
-                            objcount+=1
-
-                            if (objcount%30000 == 0):
-                                print("≈ "+str(objcount)+" objects exported to file...",end="\r")
-
-                            print(ujson.dumps(item),file=exportfile)
-
-
-                        print("Out of parser")
 
                 if(command == "go"):
+
+
+                    parser = ijson.items(getPathEvents(file, path), path)
                     objectCounter = 5
                     for item in parser:
                         objectCounter-=1
@@ -68,14 +67,20 @@ while(True):
 
 
             else:
-                i = ijson.parse(file)
                 if(path==""):
+                    i = ijson.parse(file)
                     [formatAndPrint(x) for x in i if x[0]==""]
                 else:
-                    for prefix, event, value in i:
+                    i = getPathEvents(file,path)
 
-                        prefixsplit = prefix.split(".")
-                        if (path in prefixsplit and len(prefixsplit) == len(prefixsplit) + 1):
-                            formatAndPrint(prefix, event,value)
+
+                    [formatAndPrint(x) for x in i if len(x[0].split(".")) == len(path.split("."))+1]
+                    break
+                    print("kk")
+                    for x in i:
+                        prefixsplit = x[0].split(".")
+                        if (path in prefixsplit and len(prefixsplit) == len(path.split(".")) + 1):
+                            formatAndPrint(x)
+
 
             print("Process took %s seconds to finish" % (time.time() - start_time))

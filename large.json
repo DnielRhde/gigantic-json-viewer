@@ -3,10 +3,12 @@
 
       {"name": "Paris", "type": "city"},
       {"name": "Thames", "type": "river"}
+
   ],
   "earth2": [
 
       {"name": "Pards", "type": "ciddty"},
       {"name": "222", "type": "ri2ver"}
+
   ]
 }
